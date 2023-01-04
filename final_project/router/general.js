@@ -2,14 +2,16 @@ const express = require('express');
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
+//const auth_users = require("./auth_users.js");
+//let users = auth_users.users;
 const public_users = express.Router();
 
-
 public_users.post("/register", (req,res) => {
+    console.log ( "post /register ran" );
   //Write your code here
 //  return res.status(300).json({message: "Yet to be implemented"});
-    var name = req.params.username;
-    var pass = req.params.password;
+    var name = req.body.username;
+    var pass = req.body.password;
     if ( !name ||
          name === "" ) {
         return res.status(400).json({message: "Username is empty"});
@@ -20,6 +22,11 @@ public_users.post("/register", (req,res) => {
     }
 
     if ( isValid(name) ) {
+        var user = {
+            name:name,
+            pass:pass,
+        }
+        users.push ( user );
         return res.status(400).json({message: "[" + name + "] Registered Successfully."});
     } else {
         return res.status(400).json({message: "Username is already in use"});
