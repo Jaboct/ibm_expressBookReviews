@@ -34,7 +34,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
 
    for ( i in users ) {
        var user = users[i];
-       if ( user.name == username && 
+       if ( user.name == username &&
             user.pass == password ) {
            // both were successfully matched.
            return 2;
@@ -71,28 +71,97 @@ regd_users.post("/login", (req,res) => {
 });
 */
 
+const authenticatedUser = (username,password)=>{ //returns boolean
+    //write code to check if username and password match the one we have in records.
+    var ret = {
+        status: 400,
+        message: "Failed",
+    };
+    if ( !username ||
+        username === "" ) {
+        ret.status = 400;
+        ret.message = "Username is empty.";
+        //return res.status(400).json({message: "Username is empty"});
+        return ret;
+    }
+    if ( !password ||
+         password === "" ) {
+        //return res.status(400).json({message: "Password is empty"});
+        ret.status = 400;
+        ret.message = "Password is empty.";
+        return ret;
+    }
+
+    for ( i in users ) {
+        var user = users[i];
+        if ( user.name == username &&
+            user.pass == password ) {
+            // both were successfully matched.
+            ret.status = 200;
+            var token = jwt.sign({name: username}, JWT_SECRET);
+            user.token = token;
+            ret.token = token;
+            ret.message = "Success.";
+            return ret;
+        } else {
+//          return res.status(400).json({message: "Username or password failed."});
+            ret.message = "Username or password failed.";
+            return ret;
+        }
+    }
+//   return res.status(400).end( "User or Password did not match" );
+    return ret;
+};
+
+//only registered users can login
+regd_users.post("/login", (req,res) => {
+    console.log ( "post /login" );
+    var name = req.body.username;
+    var pass = req.body.password;
+/*
+    console.log ( "name", name );
+    console.log ( "pass", pass );
+*/
+    var ret = authenticatedUser ( name, pass );
+/*
+    console.log ( "ret" );
+    console.log ( ret );
+*/
+    // can i simply return res? cuz it has status, and message and shit? I DONT KNOW.
+    if ( res.token ) {
+        return res.status(ret.status).json(res.token);
+    }
+    return res.status(ret.status).json({message: ret.message});
+});
+
+
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
 //  return res.status(300).json({message: "Yet to be implemented"});
+
 /*
+
+
     var isbn = req.params.isbn;
     for ( i in books ) {
         var book = books[i];
         if ( book.isbn == isbn ) {
             var book = books[i];
 //            return res.status(200).end(JSON.stringify(book));
-            // look through this books reviews, if 
+            // look through this books reviews, if
             for ( r in book.reviews ) {
                 console.log ( book.reviews[i] );
-                if ( book.reviews.user == req.)
+//                if ( book.reviews.user == req.)
             }
         }
     }
 */
+
     return res.status(400).end("ISBN could not be found.");
 });
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
+module.exports.JWT_SECRET = JWT_SECRET;

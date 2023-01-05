@@ -8,6 +8,7 @@ const public_users = express.Router();
 
 public_users.post("/register", (req,res) => {
     console.log ( "post /register ran" );
+    console.log ( "req.body", req.body );
   //Write your code here
 //  return res.status(300).json({message: "Yet to be implemented"});
     var name = req.body.username;
