@@ -19,6 +19,9 @@ app.use("/customer/auth/*", function auth(req,res,next){
     console.log ( "req.header ", req.header );
     console.log ( "req.session ", req.session );
 
+    next ( );
+
+/*
 	let tkn = req.header("Authorization");
 	console.log ( "tkn", tkn );
 	if ( tkn ) {
@@ -31,6 +34,7 @@ app.use("/customer/auth/*", function auth(req,res,next){
     } else {
         res.end ( "tkn failure" );
     }
+*/
 });
  
 const PORT =5000;
@@ -38,4 +42,4 @@ const PORT =5000;
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
 
-app.listen(PORT,()=>console.log("Server is running"));
+app.listen(PORT,()=>console.log("Server is running on PORT:",PORT));

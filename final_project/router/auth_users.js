@@ -139,27 +139,106 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
 //  return res.status(300).json({message: "Yet to be implemented"});
+    console.log ( "put /auth/review/:isbn" );
 
-/*
-
+    var username = "user";
+    var reviewText = "review";
 
     var isbn = req.params.isbn;
     for ( i in books ) {
-        var book = books[i];
-        if ( book.isbn == isbn ) {
+//        var book = books[i];
+//        if ( book.isbn == isbn ) {
+        if ( i == isbn ) {
             var book = books[i];
 //            return res.status(200).end(JSON.stringify(book));
-            // look through this books reviews, if
+            // look through this books reviews, if this user already has one, then replace it, if not then add the new one.
+            var replaced = 0;
             for ( r in book.reviews ) {
-                console.log ( book.reviews[i] );
-//                if ( book.reviews.user == req.)
+                var review = book.reviews[r];
+//                console.log ( book.reviews[i] );
+                if ( review.user == username ) {
+                    console.log ( "replace old" );
+                    review.review = review;
+
+                    replaced = 1;
+                    break;
+                }
             }
+            if ( !replaced ) {
+                var obj = {
+                    user : username,
+                    review : reviewText,
+                };
+                (book.reviews).push ( obj );
+//                book.reviews.push ( obj );
+                console.log ( "push new" );
+            }
+            printReviews ( book );
+            return res.status(400).end("Book found.");
         }
     }
-*/
+
 
     return res.status(400).end("ISBN could not be found.");
 });
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    console.log ( "delete /auth/review/:isbn" );
+
+
+    var username = "user";
+    var reviewText = "review";
+
+    var isbn = req.params.isbn;
+    for ( i in books ) {
+//        var book = books[i];
+//        if ( book.isbn == isbn ) {
+        if ( i == isbn ) {
+            var book = books[i];
+//            return res.status(200).end(JSON.stringify(book));
+            // look through this books reviews, if this user already has one, then replace it, if not then add the new one.
+            var replaced = 0;
+            for ( r in book.reviews ) {
+                var review = book.reviews[r];
+//                console.log ( book.reviews[i] );
+                if ( review.user == username ) {
+                    console.log ( "delete their review." );
+                    // found user, delete this review.
+                    // review.review = review;
+                    book.reviews.splice ( r, 1 );
+
+                    replaced = 1;
+                    break;
+                }
+            }
+            if ( !replaced ) {
+                console.log ( "review not found" );
+/*                var obj = {
+                    user : username,
+                    review : reviewText,
+                };
+                (book.reviews).push ( obj );
+//                book.reviews.push ( obj );
+                console.log ( "push new" );
+*/
+            }
+            printReviews ( book );
+            return res.status(400).end("Book found.");
+        }
+    }
+    return res.status(400).end("ISBN could not be found.");
+});
+
+
+function printReviews ( book ) {
+    console.log ( "printReviews ( )" );
+    console.log ( "book.title:", book.title )
+    for ( r in book.reviews ) {
+        var review = book.reviews[r];
+        console.log ( review.user, " : ", review.review );
+    }
+}
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;

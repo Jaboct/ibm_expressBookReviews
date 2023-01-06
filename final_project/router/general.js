@@ -36,15 +36,29 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  //Write your code here
-//  return res.status(300).json({message: "Yet to be implemented"});
-    return res.status(200).end(JSON.stringify(books));
+    // non-promise [Task 1]
+//    return res.status(200).end(JSON.stringify(books));
+
+    /// Promises
+
+    let myPromise = new Promise((resolve,reject) => {
+//        return res.status(200).end(JSON.stringify(books));
+        resolve ( books );
+    }
+    myPromise.then((books) => {
+//        console.log("From Callback " + successMessage)
+        if ( books ) {
+            return res.status(200).end(JSON.stringify(books));
+        } else {
+            return res.status(200).end ( "book array not found." );
+        }
+    })
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
-  //Write your code here
-//  return res.status(300).json({message: "Yet to be implemented"});
+    // non-promise [Task 2]
+/*
     var isbn = req.params.isbn;
     for ( i in books ) {
         var book = books[i];
@@ -54,12 +68,20 @@ public_users.get('/isbn/:isbn',function (req, res) {
         }
     }
     return res.status(400).end("ISBN could not be found.");
- });
+*/
+    let myPromise = new Promise((resolve,reject) => {
+//        return res.status(200).end(JSON.stringify(books));
+        resolve ( books );
+    }
+    myPromise.then((books) => {
+//        console.log("From Callback " + successMessage)
+        return res.status(200).end(JSON.stringify(books));
+    })
+});
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
-  //Write your code here
-//  return res.status(300).json({message: "Yet to be implemented"});
+    // non-promise [Task 3]
     var author = req.params.title;
     for ( i in books ) {
         var book = books[i];
@@ -73,8 +95,7 @@ public_users.get('/author/:author',function (req, res) {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-//  return res.status(300).json({message: "Yet to be implemented"});
+    // [Task 4] non-promise
     var title = req.params.title;
     for ( i in books ) {
         var book = books[i];
@@ -88,8 +109,7 @@ public_users.get('/title/:title',function (req, res) {
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-//  return res.status(300).json({message: "Yet to be implemented"});
+    // [Task 4] non-promise
     var isbn = req.params.isbn;
     for ( i in books ) {
         // var book = books[i];
