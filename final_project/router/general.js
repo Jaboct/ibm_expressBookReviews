@@ -41,10 +41,11 @@ public_users.get('/',function (req, res) {
 
     /// Promises
 
+    // promise [Task 10]
     let myPromise = new Promise((resolve,reject) => {
 //        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
-    }
+    });
     myPromise.then((books) => {
 //        console.log("From Callback " + successMessage)
         if ( books ) {
@@ -69,13 +70,21 @@ public_users.get('/isbn/:isbn',function (req, res) {
     }
     return res.status(400).end("ISBN could not be found.");
 */
+    // promise [Task 11]
     let myPromise = new Promise((resolve,reject) => {
 //        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
-    }
+    });
     myPromise.then((books) => {
-//        console.log("From Callback " + successMessage)
-        return res.status(200).end(JSON.stringify(books));
+        var isbn = req.params.isbn;
+        for ( i in books ) {
+            var book = books[i];
+            if ( book.isbn == isbn ) {
+                var book = books[i];
+                return res.status(200).end(JSON.stringify(book));
+            }
+        }
+        return res.status(400).end("ISBN could not be found.");
     })
 });
   
@@ -83,6 +92,7 @@ public_users.get('/isbn/:isbn',function (req, res) {
 public_users.get('/author/:author',function (req, res) {
     // non-promise [Task 3]
     var author = req.params.title;
+/*
     for ( i in books ) {
         var book = books[i];
         if ( book.author == author ) {
@@ -91,11 +101,28 @@ public_users.get('/author/:author',function (req, res) {
         }
     }
     return res.status(400).end("Author could not be found.");
+*/
+    // promise [Task 12]
+    let myPromise = new Promise((resolve,reject) => {
+//        return res.status(200).end(JSON.stringify(books));
+        resolve ( books );
+    });
+    myPromise.then((books) => {
+        for ( i in books ) {
+            var book = books[i];
+            if ( book.author == author ) {
+                var book = books[i];
+                return res.status(200).end(JSON.stringify(book));
+            }
+        }
+        return res.status(400).end("Author could not be found.");
+    })
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     // [Task 4] non-promise
+/*
     var title = req.params.title;
     for ( i in books ) {
         var book = books[i];
@@ -105,6 +132,23 @@ public_users.get('/title/:title',function (req, res) {
         }
     }
     return res.status(400).end("Title could not be found.");
+*/
+    // promise [Task 13]
+    let myPromise = new Promise((resolve,reject) => {
+//        return res.status(200).end(JSON.stringify(books));
+        resolve ( books );
+    });
+    myPromise.then((books) => {
+        var title = req.params.title;
+        for ( i in books ) {
+            var book = books[i];
+            if ( book.title == title ) {
+                var book = books[i];
+                return res.status(200).end(JSON.stringify(book));
+            }
+        }
+        return res.status(400).end("Title could not be found.");
+    })
 });
 
 //  Get book review

@@ -18,59 +18,6 @@ const isValid = (username)=>{ //returns boolean
     return 1;
 }
 
-/*
-const authenticatedUser = (username,password)=>{ //returns boolean
-    //write code to check if username and password match the one we have in records.
-    if ( !username ||
-        username === "" ) {
-       //return res.status(400).json({message: "Username is empty"});
-       return 4;
-   }
-   if ( !password ||
-    password === "" ) {
-       //return res.status(400).json({message: "Password is empty"});
-       return 3;
-   }
-
-   for ( i in users ) {
-       var user = users[i];
-       if ( user.name == username &&
-            user.pass == password ) {
-           // both were successfully matched.
-           return 2;
-       } else {
-//           return res.status(400).json({message: "Username or password failed."});
-            return 1;
-       }
-   }
-//   return res.status(400).end( "User or Password did not match" );
-   return 0;
-};
-
-//only registered users can login
-regd_users.post("/login", (req,res) => {
-    console.log ( "post /login" );
-    var name = req.body.username;
-    var pass = req.body.password;
-    var ret = authenticatedUser ( name, pass );
-    if ( ret == 0 ) {
-        return res.status(400).end( "User or Password did not match" );        
-    } else if ( ret == 1 ) {
-        return res.status(400).json({message: "Username or password failed."});
-    } else if ( ret == 2 ) {
-        var token = jwt.sign({name: name}, JWT_SECRET);
-        user.token = token;
-        return res.json({
-            token: token,
-        });
-    } else if ( ret == 3 ) {
-        return res.status(400).json({message: "Password is empty"});
-    } else if ( ret == 4 ) {
-        return res.status(400).json({message: "Username is empty"});
-    }
-});
-*/
-
 const authenticatedUser = (username,password)=>{ //returns boolean
     //write code to check if username and password match the one we have in records.
     var ret = {
@@ -118,16 +65,7 @@ regd_users.post("/login", (req,res) => {
     console.log ( "post /login" );
     var name = req.body.username;
     var pass = req.body.password;
-/*
-    console.log ( "name", name );
-    console.log ( "pass", pass );
-*/
     var ret = authenticatedUser ( name, pass );
-/*
-    console.log ( "ret" );
-    console.log ( ret );
-*/
-    // can i simply return res? cuz it has status, and message and shit? I DONT KNOW.
     if ( res.token ) {
         return res.status(ret.status).json(res.token);
     }
@@ -197,7 +135,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
             var book = books[i];
 //            return res.status(200).end(JSON.stringify(book));
             // look through this books reviews, if this user already has one, then replace it, if not then add the new one.
-            var replaced = 0;
+            var removed = 0;
             for ( r in book.reviews ) {
                 var review = book.reviews[r];
 //                console.log ( book.reviews[i] );
@@ -207,20 +145,12 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
                     // review.review = review;
                     book.reviews.splice ( r, 1 );
 
-                    replaced = 1;
+                    removed = 1;
                     break;
                 }
             }
-            if ( !replaced ) {
+            if ( !removed ) {
                 console.log ( "review not found" );
-/*                var obj = {
-                    user : username,
-                    review : reviewText,
-                };
-                (book.reviews).push ( obj );
-//                book.reviews.push ( obj );
-                console.log ( "push new" );
-*/
             }
             printReviews ( book );
             return res.status(400).end("Book found.");
