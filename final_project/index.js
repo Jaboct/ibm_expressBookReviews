@@ -19,9 +19,8 @@ app.use("/customer/auth/*", function auth(req,res,next){
     console.log ( "req.header ", req.header );
     console.log ( "req.session ", req.session );
 
-    next ( );
+//    next ( );
 
-/*
 	let tkn = req.header("Authorization");
 	console.log ( "tkn", tkn );
 	if ( tkn ) {
@@ -30,11 +29,10 @@ app.use("/customer/auth/*", function auth(req,res,next){
             jwt.verify ( tkn, auth_users.JWT_SECRET );
     //    	jwt.verify ( tokenValue, JWT_SECRET );
         console.log ( "verificationStatus: ", verificationStatus );
-    next ( );
+        next ( );
     } else {
         res.end ( "tkn failure" );
     }
-*/
 });
  
 const PORT =5000;

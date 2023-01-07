@@ -22,7 +22,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
     //write code to check if username and password match the one we have in records.
     var ret = {
         status: 400,
-        message: "Failed",
+        message: "Authentication Failed",
     };
     if ( !username ||
         username === "" ) {
@@ -48,7 +48,7 @@ const authenticatedUser = (username,password)=>{ //returns boolean
             var token = jwt.sign({name: username}, JWT_SECRET);
             user.token = token;
             ret.token = token;
-            ret.message = "Success.";
+            ret.message = "Login Success.";
             return ret;
         } else {
 //          return res.status(400).json({message: "Username or password failed."});
@@ -79,8 +79,14 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
 //  return res.status(300).json({message: "Yet to be implemented"});
     console.log ( "put /auth/review/:isbn" );
 
+    // should use session to identify the user name.
+    var username = req.body.username;
+    var reviewText = req.body.review;
+
+/*
     var username = "user";
     var reviewText = "review";
+*/
 
     var isbn = req.params.isbn;
     for ( i in books ) {
@@ -112,7 +118,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
                 console.log ( "push new" );
             }
             printReviews ( book );
-            return res.status(400).end("Book found.");
+            return res.status(400).end("Book found and review made.");
         }
     }
 
@@ -153,7 +159,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
                 console.log ( "review not found" );
             }
             printReviews ( book );
-            return res.status(400).end("Book found.");
+            return res.status(400).end("Book found and review deleted.");
         }
     }
     return res.status(400).end("ISBN could not be found.");

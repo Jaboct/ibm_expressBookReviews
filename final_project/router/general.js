@@ -43,11 +43,9 @@ public_users.get('/',function (req, res) {
 
     // promise [Task 10]
     let myPromise = new Promise((resolve,reject) => {
-//        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
     });
     myPromise.then((books) => {
-//        console.log("From Callback " + successMessage)
         if ( books ) {
             return res.status(200).end(JSON.stringify(books));
         } else {
@@ -72,7 +70,6 @@ public_users.get('/isbn/:isbn',function (req, res) {
 */
     // promise [Task 11]
     let myPromise = new Promise((resolve,reject) => {
-//        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
     });
     myPromise.then((books) => {
@@ -104,7 +101,6 @@ public_users.get('/author/:author',function (req, res) {
 */
     // promise [Task 12]
     let myPromise = new Promise((resolve,reject) => {
-//        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
     });
     myPromise.then((books) => {
@@ -122,8 +118,8 @@ public_users.get('/author/:author',function (req, res) {
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     // [Task 4] non-promise
-/*
     var title = req.params.title;
+/*
     for ( i in books ) {
         var book = books[i];
         if ( book.title == title ) {
@@ -135,11 +131,9 @@ public_users.get('/title/:title',function (req, res) {
 */
     // promise [Task 13]
     let myPromise = new Promise((resolve,reject) => {
-//        return res.status(200).end(JSON.stringify(books));
         resolve ( books );
     });
     myPromise.then((books) => {
-        var title = req.params.title;
         for ( i in books ) {
             var book = books[i];
             if ( book.title == title ) {
